@@ -43,12 +43,6 @@ Open [http://localhost:3001](http://localhost:3001) in your browser to see the w
 Use the Expo Go app to run the mobile application.
 Your app will connect to the Convex cloud backend automatically.
 
-
-
-
-
-
-
 ## Project Structure
 
 ```
