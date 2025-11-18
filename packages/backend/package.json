@@ -1,21 +1,21 @@
 {
-  "name": "@roomietive/backend",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "convex dev",
-    "dev:setup": "convex dev --configure --until-success"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@types/node": "catalog:",
-    "typescript": "catalog:"
-  },
-  "dependencies": {
-    "convex": "catalog:",
-    "better-auth": "catalog:",
-    "@convex-dev/better-auth": "catalog:",
-    "@better-auth/expo": "catalog:"
-  }
+	"name": "@roomietive/backend",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "convex dev",
+		"dev:setup": "convex dev --configure --until-success"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"typescript": "catalog:"
+	},
+	"dependencies": {
+		"convex": "catalog:",
+		"better-auth": "catalog:",
+		"@convex-dev/better-auth": "catalog:",
+		"@better-auth/expo": "catalog:"
+	}
 }

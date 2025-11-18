@@ -1,11 +1,11 @@
+import { expo } from "@better-auth/expo";
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
-import { expo } from "@better-auth/expo";
-import { components } from "./_generated/api";
-import { DataModel } from "./_generated/dataModel";
-import { query } from "./_generated/server";
 import { betterAuth } from "better-auth";
 import { v } from "convex/values";
+import { components } from "./_generated/api";
+import type { DataModel } from "./_generated/dataModel";
+import { query } from "./_generated/server";
 
 const siteUrl = process.env.SITE_URL!;
 const nativeAppUrl = process.env.NATIVE_APP_URL || "mybettertapp://";
@@ -36,7 +36,5 @@ export { createAuth };
 export const getCurrentUser = query({
 	args: {},
 	returns: v.any(),
-	handler: async function (ctx, args) {
-		return authComponent.getAuthUser(ctx);
-	},
+	handler: async (ctx, _args) => authComponent.getAuthUser(ctx),
 });

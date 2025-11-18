@@ -1,5 +1,11 @@
-import { query, mutation } from "./_generated/server";
+import { defineTable } from "convex/server";
 import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
+
+export const todos = defineTable({
+	text: v.string(),
+	completed: v.boolean(),
+});
 
 export const getAll = query({
 	handler: async (ctx) => {
