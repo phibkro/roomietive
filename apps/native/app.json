@@ -1,0 +1,17 @@
+{
+	"expo": {
+		"scheme": "roomietive",
+		"userInterfaceStyle": "automatic",
+		"orientation": "default",
+		"web": {
+			"bundler": "metro"
+		},
+		"name": "roomietive",
+		"slug": "roomietive",
+		"plugins": ["expo-font"],
+		"experiments": {
+			"typedRoutes": true,
+			"reactCompiler": true
+		}
+	}
+}
