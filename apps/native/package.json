@@ -16,6 +16,8 @@
     "@gorhom/bottom-sheet": "^5.2.6",
     "@react-navigation/drawer": "^7.3.9",
     "@react-navigation/elements": "^2.8.1",
+    "@tanstack/react-query": "^5.85.5",
+    "drizzle-orm": "^0.44.7",
     "expo": "^54.0.23",
     "expo-constants": "~18.0.10",
     "expo-font": "~14.0.9",
@@ -24,6 +26,7 @@
     "expo-network": "~8.0.7",
     "expo-router": "~6.0.14",
     "expo-secure-store": "~15.0.7",
+    "expo-sqlite": "~16.0.9",
     "expo-status-bar": "~3.0.8",
     "heroui-native": "1.0.0-beta.3",
     "react": "19.1.0",
@@ -40,12 +43,13 @@
     "tailwind-merge": "^3.4.0",
     "tailwind-variants": "3.1.1",
     "tailwindcss": "~4.1.17",
-    "uniwind": "^1.0.4",
-    "@tanstack/react-query": "^5.85.5"
+    "uniwind": "^1.0.4"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
     "@types/react": "~19.1.0",
+    "babel-plugin-inline-import": "^3.0.0",
+    "drizzle-kit": "^0.31.7",
     "typescript": "~5.9.2"
   },
   "private": true
