@@ -3,5 +3,18 @@
     "expo-app-design@expo-plugins": true,
     "expo-deployment@expo-plugins": true,
     "upgrading-expo@expo-plugins": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/read_hook.js"
+          }
+        ]
+      }
+    ]
   }
 }
