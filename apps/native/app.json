@@ -8,10 +8,7 @@
     },
     "name": "roomietive",
     "slug": "roomietive",
-    "plugins": [
-      "expo-font",
-      "expo-sqlite"
-    ],
+    "plugins": ["expo-font"],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true

@@ -1,40 +1,72 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { api } from "@roomietive/backend/convex/_generated/api";
+import { useConvexAuth, useQuery } from "convex/react";
+import { Button, Chip, Divider, Spinner, Surface, useThemeColor } from "heroui-native";
+import { Text, View } from "react-native";
+
 import { Container } from "@/components/container";
-import { Card, Chip, useThemeColor } from "heroui-native";
-import { usersTable } from "@/db/schema";
-import { useEffect, useState } from "react";
-import { db } from "@/db/drizzle";
+import { SignIn } from "@/components/sign-in";
+import { SignUp } from "@/components/sign-up";
+import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
-  const [items, setItems] = useState<typeof usersTable.$inferSelect[] | null>(null);
+  const healthCheck = useQuery(api.healthCheck.get);
+  const { isAuthenticated } = useConvexAuth();
+  const user = useQuery(api.auth.getCurrentUser, isAuthenticated ? {} : "skip");
+  const successColor = useThemeColor("success");
+  const dangerColor = useThemeColor("danger");
 
-    useEffect(() => {
-      (async () => {
-      const users = await db.select().from(usersTable);
-      setItems(users);
-    })();
-  }, []);
+  const isConnected = healthCheck === "OK";
+  const isLoading = healthCheck === undefined;
 
-	return (
-		<Container className="p-6">
-			<View className="py-4 mb-6">
-				<Text className="text-4xl font-bold text-foreground mb-2">
-					BETTER T STACK
-				</Text>
-				{items ? (
-					items.map((item) => (
-						<Card key={item.id} className="mb-4 p-4">
-							<Text className="text-lg font-semibold text-foreground mb-1">
-								{item.name}
-							</Text>
-							<Text className="text-foreground">Age: {item.age}</Text>
-							<Text className="text-foreground">Email: {item.email}</Text>
-						</Card>
-					))
-				) : (
-					<Text className="text-foreground">No items available.</Text>
-				)}
-			</View>
-		</Container>
-	);
+  return (
+    <Container className="p-4">
+      <View className="py-6 mb-4">
+        <Text className="text-3xl font-semibold text-foreground tracking-tight">
+          Better T Stack
+        </Text>
+        <Text className="text-muted text-sm mt-1">Full-stack TypeScript starter</Text>
+      </View>
+
+      {user ? (
+        <Surface variant="secondary" className="mb-4 p-4 rounded-lg">
+          <View className="flex-row items-center justify-between">
+            <View className="flex-1">
+              <Text className="text-foreground font-medium">{user.name}</Text>
+              <Text className="text-muted text-xs mt-0.5">{user.email}</Text>
+            </View>
+            <Button
+              variant="destructive"
+              size="sm"
+              onPress={() => {
+                authClient.signOut();
+              }}
+            >
+              Sign Out
+            </Button>
+          </View>
+        </Surface>
+      ) : null}
+      <Surface variant="secondary" className="p-4 rounded-lg">
+        <Text className="text-foreground font-medium mb-2">API Status</Text>
+        <View className="flex-row items-center gap-2">
+          <View
+            className={`w-2 h-2 rounded-full ${healthCheck === "OK" ? "bg-success" : "bg-danger"}`}
+          />
+          <Text className="text-muted text-xs">
+            {healthCheck === undefined
+              ? "Checking..."
+              : healthCheck === "OK"
+                ? "Connected to API"
+                : "API Disconnected"}
+          </Text>
+        </View>
+      </Surface>
+      {!user && (
+        <View className="mt-4 gap-4">
+          <SignIn />
+          <SignUp />
+        </View>
+      )}
+    </Container>
+  );
 }

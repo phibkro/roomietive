@@ -1,75 +1,44 @@
 import "@/global.css";
-
+import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
+import { env } from "@roomietive/env/native";
+import { ConvexReactClient } from "convex/react";
 import { Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+
 import { AppThemeProvider } from "@/contexts/app-theme-context";
-import { useEffect, useState } from 'react';
-import { usersTable } from '@/db/schema';
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import migrations from '@/drizzle/migrations';
-import * as SQLite from 'expo-sqlite';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-
-const expo = SQLite.openDatabaseSync('db.db');
-
-const db = drizzle(expo);
+import { authClient } from "@/lib/auth-client";
 
 export const unstable_settings = {
-	initialRouteName: "(drawer)",
+  initialRouteName: "(drawer)",
 };
 
+const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
+  unsavedChangesWarning: false,
+});
+
 function StackLayout() {
-  const { success, error } = useMigrations(db, migrations);
-  const [items, setItems] = useState<typeof usersTable.$inferSelect[] | null>(null);
-
-  useEffect(() => {
-    if (!success) return;
-
-    (async () => {
-      await db.delete(usersTable);
-
-      await db.insert(usersTable).values([
-        {
-            name: 'John',
-            age: 30,
-            email: 'john@example.com',
-        },
-      ]);
-
-      const users = await db.select().from(usersTable);
-      setItems(users);
-    })();
-  }, [success]);
-
-  	if (error) {
-		console.error(`Migration error: ${error.message}`);
-  	}
-
-	console.info('Items:', items);
-
-	return (
-		<Stack screenOptions={{}}>
-			<Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-			<Stack.Screen
-				name="modal"
-				options={{ title: "Modal", presentation: "modal" }}
-			/>
-		</Stack>
-	);
+  return (
+    <Stack screenOptions={{}}>
+      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+      <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
+    </Stack>
+  );
 }
 
 export default function Layout() {
-	return (
-		<GestureHandlerRootView style={{ flex: 1 }}>
-			<KeyboardProvider>
-				<AppThemeProvider>
-					<HeroUINativeProvider>
-						<StackLayout />
-					</HeroUINativeProvider>
-				</AppThemeProvider>
-			</KeyboardProvider>
-		</GestureHandlerRootView>
-	);
+  return (
+    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <KeyboardProvider>
+          <AppThemeProvider>
+            <HeroUINativeProvider>
+              <StackLayout />
+            </HeroUINativeProvider>
+          </AppThemeProvider>
+        </KeyboardProvider>
+      </GestureHandlerRootView>
+    </ConvexBetterAuthProvider>
+  );
 }
